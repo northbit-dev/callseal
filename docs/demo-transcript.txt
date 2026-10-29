@@ -1,0 +1,51 @@
+
+CallSeal — prove your trading track record, never leak a call.
+Every step below runs the compiled Compact circuits (compact-runtime). A failed assert = no valid proof.
+
+oracle   deploys CallSeal: min move 2.00%, proof window 1 round
+oracle   round 0 closes: BTC 98000  ETH 3500  ADA 0.5  NIGHT 0.05
+alice    registers as analyst  pk=5a7fa8fa…
+bob      registers as analyst  pk=e9a22bd1…
+
+1) Seal calls. Only a commitment goes on-chain.
+alice    seals #0  private: BTC >= 101000  expiry round 2
+    public ledger: call #0 analyst=5a7fa8fa… commitment=bd4ec853… sealed@1 expiry@2 status=SEALED
+alice    seals #1  private: ETH <= 3300  expiry round 2
+    public ledger: call #1 analyst=5a7fa8fa… commitment=dbea0ee9… sealed@1 expiry@2 status=SEALED
+bob      seals #2  private: ADA >= 0.52  expiry round 2
+    public ledger: call #2 analyst=e9a22bd1… commitment=762f66f7… sealed@1 expiry@2 status=SEALED
+bob      seals #3  private: NIGHT <= 0.045  expiry round 2
+    public ledger: call #3 analyst=e9a22bd1… commitment=a89827da… sealed@1 expiry@2 status=SEALED
+
+2) Gaming attempts are rejected inside the proof.
+bob      tries "BTC >= 98500" (0.5% away)  → rejected: call too close to the last close
+
+3) Market moves. Oracle publishes closes.
+oracle   round 1 closes: BTC 99200  ETH 3460  ADA 0.505  NIGHT 0.051
+oracle   round 2 closes: BTC 102300  ETH 3420  ADA 0.531  NIGHT 0.049   (expiry round)
+
+4) Prove hits in zero knowledge. The call itself stays sealed.
+alice    proveHit #0 → HIT proven  (public learns: hit. not asset, side or level)
+alice    proveHit #1 → cannot prove (call did not hit); stays sealed
+bob      proveHit #2 → HIT proven  (public learns: hit. not asset, side or level)
+bob      proveHit #3 → cannot prove (call did not hit); stays sealed
+bob      tries to claim alice's #0 → rejected: not your call
+
+5) Proof window closes. Hidden losers are counted, by anyone.
+anyone   expireCall #1 → MISS
+anyone   expireCall #3 → MISS
+
+6) Optional: alice reveals her winner to market herself.
+alice    revealCall #0 → public now: BTC >= 101000
+         bob's calls stay private forever; his record is still complete.
+
+7) Subscriber check (off-chain): alice DMs a paying subscriber the opening of #1.
+  real opening matches commitment: yes    edited level matches: no
+
+Public leaderboard (straight from the ledger):
+  analyst      calls  hits  misses  open  hit-rate
+  bob             2     1       1     0   50%
+  alice           2     1       1     0   50%
+
+  totals: sealed 4, hits 2, misses 2. Every sealed call is scored. No cherry-picking.
+

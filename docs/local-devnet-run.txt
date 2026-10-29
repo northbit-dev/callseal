@@ -1,0 +1,16 @@
+[22:57:21Z] network: local (undeployed)
+[22:57:54Z] wallet synced; unshielded address: mn_addr_undeployed1h3ssm5ru2t6eqy4g3she78zlxn96e36ms6pq996aduvmateh9p9sk96u7s
+[22:57:54Z] waiting for spendable DUST ...
+[22:57:54Z] deploying CallSeal ...
+[22:58:13Z] ✔ deploy  tx b6df69f5b9c7eae0ae0c69c0399c6769fa6ddc66e6e6550b1163cdb8c2b7a405  block 13
+[22:58:32Z] ✔ oracle.publishCloses(round 0)  tx afecbef329b4685bb93fa92c3f75ac932bc9c84aec3d16c3cfb69cfc9e2b94bc  block 16
+[22:58:49Z] ✔ alice.registerAnalyst  tx 02f299c52888b974814b44ca319db3dc13d1789ac432ab961cd1aeb9213c6f9c  block 19
+[22:59:08Z] ✔ alice.sealCall #0 (private: BTC >= 101000)  tx 9eabc7d684020e3738db19ccd593ecc012b2108531ac6fc9047d890640e1f783  block 22
+[22:59:25Z] ✔ alice.sealCall #1 (private: ETH <= 3300)  tx 97e3779617f6a40d24767015b8df1f45a33e34dbbe9c900bb2377e97a2d38ea0  block 25
+[22:59:44Z] ✔ oracle.publishCloses(round 1 = expiry)  tx 1d712f70f7b0439490a01b34dcd2fc278a913eff4c9887846049e566d5c05a91  block 28
+[23:00:01Z] ✔ alice.proveHit #0 (ZK: hit, call stays sealed)  tx 24341499553cc8ab3b88c27bc5310575e913881dc3b2462f608460ad164f3e2f  block 31
+[23:00:20Z] ✔ oracle.publishCloses(round 2)  tx f6c2768fb70dd1a5bf622e4dbf22b721946db7caf8174cd691d2fe9b6be416c6  block 34
+[23:00:37Z] ✔ anyone.expireCall #1 (hidden loser counted)  tx cade7635888fa6054512c1c15a828f07ccb4185ede1246c4f225d972cbb5d0ae  block 37
+[23:00:56Z] ✔ alice.revealCall #0 (optional disclosure)  tx 942f8a16b07ba309bfcd8c5ec1ea0593970717d7244ac4a803ab14306e630f5e  block 40
+[23:00:56Z] final on-chain state: {"round":"3","totalSealed":"2","totalHits":"1","totalMisses":"1","alice":{"pk":"db8190533c3c43a853366a813d18dd49ca5b392aacaab6a138b81882b44a3be7","calls":"2","hits":"1","misses":"1"},"call0":"HIT","call1":"MISS","call1Revealed":false,"call0Revealed":"BTC >= 101000"}
+[23:00:56Z] contract 7fe8033e5faba721f8db8cab03d3bdc8ab4ef71a6eaaee57ce2d64b7a91d8a37 — wrote deploy/runs/local.json

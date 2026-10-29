@@ -1,0 +1,11 @@
+CallSeal
+Copyright 2026 northbit
+
+This product includes software adapted from midnight-examples
+(https://github.com/midnightntwrk), Copyright Midnight Foundation,
+licensed under the Apache License, Version 2.0:
+  - deploy/compose.yml, deploy/compose.host.yml (local network stack)
+  - deploy/run.mjs: NIGHT -> DUST registration flow
+
+It depends on Midnight libraries (@midnight-ntwrk/*) licensed under
+the Apache License, Version 2.0.

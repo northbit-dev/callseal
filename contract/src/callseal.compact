@@ -1,0 +1,232 @@
+// SPDX-License-Identifier: Apache-2.0
+// CallSeal: sealed trading calls with a track record nobody can cherry-pick.
+// Copyright 2026 northbit
+//
+// What is public (ledger):   who made a call, when it was sealed, when it
+//                             expires, a hash commitment, and the outcome.
+// What stays private:        the asset, the direction and the price level,
+//                             forever, unless the analyst chooses to reveal.
+//
+// Three rules make the record honest:
+//   1. A call must be non-trivial: the level has to sit at least `minMoveBps`
+//      away from the last published close. This is checked inside the proof,
+//      against public oracle data, without revealing the call.
+//   2. A hit can only be claimed with a ZK proof against the oracle close for
+//      the call's expiry round. The proof shows "this call hit" and nothing else.
+//   3. A call that is not proven within `graceRounds` after expiry becomes a
+//      MISS, and anyone can trigger that. Hidden losers still count.
+
+pragma language_version >= 0.23;
+
+import CompactStandardLibrary;
+
+export enum Direction { ABOVE, BELOW }
+
+export enum CallStatus { SEALED, HIT, MISS }
+
+// Number of assets the oracle quotes each round (index 0..3).
+// 0 = BTC, 1 = ETH, 2 = ADA, 3 = NIGHT in the demo; the contract only sees indices.
+
+// The private opening of a call. Lives only in the analyst's private state.
+export struct CallOpening {
+  asset: Uint<8>;
+  direction: Direction;
+  level: Uint<64>;
+  salt: Bytes<32>;
+}
+
+// Public data about one call.
+export struct CallRecord {
+  analyst: Bytes<32>;
+  commitment: Bytes<32>;
+  sealedRound: Uint<64>;
+  expiryRound: Uint<64>;
+  status: CallStatus;
+}
+
+// Public per-analyst track record.
+export struct Stats {
+  calls: Uint<32>;
+  hits: Uint<32>;
+  misses: Uint<32>;
+}
+
+// What an analyst may choose to publish after expiry.
+export struct RevealedCall {
+  asset: Uint<8>;
+  direction: Direction;
+  level: Uint<64>;
+}
+
+// ---- public ledger -----------------------------------------------------------
+export ledger oracle: Bytes<32>;                          // oracle public key
+export ledger minMoveBps: Uint<16>;                       // minimum distance of a call, in bps
+export ledger graceRounds: Uint<8>;                       // proof window after expiry
+export ledger round: Counter;                             // rounds with published closes
+export ledger closes: Map<Uint<64>, Vector<4, Uint<64>>>; // round -> close per asset
+export ledger nextId: Counter;
+export ledger calls: Map<Uint<64>, CallRecord>;
+export ledger analysts: Map<Bytes<32>, Stats>;
+export ledger revealed: Map<Uint<64>, RevealedCall>;
+export ledger totalSealed: Counter;
+export ledger totalHits: Counter;
+export ledger totalMisses: Counter;
+
+// ---- private state (supplied by the local wallet / DApp) ----------------------
+witness localSecretKey(): Bytes<32>;
+witness pendingCall(): CallOpening;               // the call about to be sealed
+witness storedOpening(id: Uint<64>): CallOpening; // the opening kept for call `id`
+
+constructor(oraclePk: Bytes<32>, moveBps: Uint<16>, grace: Uint<8>) {
+  oracle = disclose(oraclePk);
+  minMoveBps = disclose(moveBps);
+  graceRounds = disclose(grace);
+}
+
+// ---- pure helpers --------------------------------------------------------------
+export pure circuit publicKey(sk: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<2, Bytes<32>>>([pad(32, "callseal:pk:"), sk]);
+}
+
+// The commitment binds the opening to its author, so a copied commitment
+// cannot be claimed by anyone else.
+export pure circuit commitmentOf(author: Bytes<32>, c: CallOpening): Bytes<32> {
+  return persistentHash<Vector<2, Bytes<32>>>([author, persistentHash<CallOpening>(c)]);
+}
+
+pure circuit priceOf(prices: Vector<4, Uint<64>>, asset: Uint<8>): Uint<64> {
+  return asset == 0 ? prices[0] : asset == 1 ? prices[1] : asset == 2 ? prices[2] : prices[3];
+}
+
+export pure circuit isHit(c: CallOpening, close: Uint<64>): Boolean {
+  return c.direction == Direction.ABOVE ? close >= c.level : close <= c.level;
+}
+
+// Level must be at least `bps` basis points away from `ref` in the called direction.
+export pure circuit isNonTrivial(c: CallOpening, ref: Uint<64>, bps: Uint<16>): Boolean {
+  return c.direction == Direction.ABOVE
+    ? c.level * 10000 >= ref * (10000 + bps)
+    : c.level * 10000 + ref * bps <= ref * 10000;
+}
+
+// ---- oracle ---------------------------------------------------------------------
+// Publish the closes for the current round and move the clock forward.
+export circuit publishCloses(prices: Vector<4, Uint<64>>): Uint<64> {
+  assert(publicKey(localSecretKey()) == oracle, "only the oracle can publish closes");
+  const r = round.read();
+  closes.insert(r, disclose(prices));
+  round.increment(1);
+  return r;
+}
+
+// ---- analysts -------------------------------------------------------------------
+export circuit registerAnalyst(): Bytes<32> {
+  const pk = disclose(publicKey(localSecretKey()));
+  assert(!analysts.member(pk), "already registered");
+  analysts.insert(pk, Stats { calls: 0, hits: 0, misses: 0 });
+  return pk;
+}
+
+// Seal a call. Public: author, rounds, commitment. Private: asset, direction, level.
+export circuit sealCall(expiryRound: Uint<64>): Uint<64> {
+  const pk = disclose(publicKey(localSecretKey()));
+  assert(analysts.member(pk), "unknown analyst");
+  const now = round.read();
+  assert(now > 0, "no closes published yet");
+  const er = disclose(expiryRound);
+  assert(er >= now, "expiry must not be in the past");
+  const c = pendingCall();
+  assert(c.asset < 4, "unknown asset");
+  const ref = priceOf(closes.lookup((now - 1) as Uint<64>), c.asset);
+  assert(isNonTrivial(c, ref, minMoveBps), "call too close to the last close");
+  const id = nextId.read();
+  calls.insert(id, CallRecord {
+    analyst: pk,
+    commitment: disclose(commitmentOf(pk, c)),
+    sealedRound: now,
+    expiryRound: er,
+    status: CallStatus.SEALED
+  });
+  const s = analysts.lookup(pk);
+  analysts.insert(pk, Stats { calls: (s.calls + 1) as Uint<32>, hits: s.hits, misses: s.misses });
+  nextId.increment(1);
+  totalSealed.increment(1);
+  return id;
+}
+
+// Prove that a sealed call hit, without revealing it.
+export circuit proveHit(id: Uint<64>): [] {
+  const i = disclose(id);
+  assert(calls.member(i), "unknown call");
+  const rec = calls.lookup(i);
+  const pk = publicKey(localSecretKey());
+  assert(disclose(pk == rec.analyst), "not your call");
+  assert(rec.status == CallStatus.SEALED, "call already settled");
+  const now = round.read();
+  assert(now > rec.expiryRound, "expiry close not published yet");
+  assert(now <= rec.expiryRound + graceRounds, "proof window closed");
+  const c = storedOpening(i);
+  assert(disclose(commitmentOf(rec.analyst, c) == rec.commitment), "opening does not match commitment");
+  assert(c.asset < 4, "unknown asset");
+  const close = priceOf(closes.lookup(rec.expiryRound), c.asset);
+  assert(disclose(isHit(c, close)), "call did not hit");
+  calls.insert(i, CallRecord {
+    analyst: rec.analyst, commitment: rec.commitment,
+    sealedRound: rec.sealedRound, expiryRound: rec.expiryRound,
+    status: CallStatus.HIT
+  });
+  const s = analysts.lookup(rec.analyst);
+  analysts.insert(rec.analyst, Stats { calls: s.calls, hits: (s.hits + 1) as Uint<32>, misses: s.misses });
+  totalHits.increment(1);
+}
+
+// Anyone: a call that was not proven in time is a miss.
+export circuit expireCall(id: Uint<64>): [] {
+  const i = disclose(id);
+  assert(calls.member(i), "unknown call");
+  const rec = calls.lookup(i);
+  assert(rec.status == CallStatus.SEALED, "call already settled");
+  assert(round.read() > rec.expiryRound + graceRounds, "proof window still open");
+  calls.insert(i, CallRecord {
+    analyst: rec.analyst, commitment: rec.commitment,
+    sealedRound: rec.sealedRound, expiryRound: rec.expiryRound,
+    status: CallStatus.MISS
+  });
+  const s = analysts.lookup(rec.analyst);
+  analysts.insert(rec.analyst, Stats { calls: s.calls, hits: s.hits, misses: (s.misses + 1) as Uint<32> });
+  totalMisses.increment(1);
+}
+
+// Optional selective disclosure: publish a call after its expiry.
+// A still-sealed call is scored on the spot, hit or miss.
+export circuit revealCall(id: Uint<64>): CallStatus {
+  const i = disclose(id);
+  assert(calls.member(i), "unknown call");
+  assert(!revealed.member(i), "already revealed");
+  const rec = calls.lookup(i);
+  assert(disclose(publicKey(localSecretKey()) == rec.analyst), "not your call");
+  assert(round.read() > rec.expiryRound, "call has not expired yet");
+  const c = disclose(storedOpening(i));
+  assert(commitmentOf(rec.analyst, c) == rec.commitment, "opening does not match commitment");
+  assert(c.asset < 4, "unknown asset");
+  revealed.insert(i, RevealedCall { asset: c.asset, direction: c.direction, level: c.level });
+  if (rec.status == CallStatus.SEALED) {
+    const hit = isHit(c, priceOf(closes.lookup(rec.expiryRound), c.asset));
+    const st = hit ? CallStatus.HIT : CallStatus.MISS;
+    calls.insert(i, CallRecord {
+      analyst: rec.analyst, commitment: rec.commitment,
+      sealedRound: rec.sealedRound, expiryRound: rec.expiryRound,
+      status: st
+    });
+    const s = analysts.lookup(rec.analyst);
+    if (hit) {
+      analysts.insert(rec.analyst, Stats { calls: s.calls, hits: (s.hits + 1) as Uint<32>, misses: s.misses });
+      totalHits.increment(1);
+    } else {
+      analysts.insert(rec.analyst, Stats { calls: s.calls, hits: s.hits, misses: (s.misses + 1) as Uint<32> });
+      totalMisses.increment(1);
+    }
+    return st;
+  }
+  return rec.status;
+}

@@ -1,0 +1,63 @@
+{
+  "name": "callseal",
+  "version": "0.2.0",
+  "description": "Prove your trading track record without leaking a call: zero-knowledge trading calls on Midnight.",
+  "license": "Apache-2.0",
+  "author": "northbit",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "midnight",
+    "midnightntwrk",
+    "compact",
+    "zero-knowledge",
+    "trading",
+    "track-record"
+  ],
+  "scripts": {
+    "compact": "compactc contract/src/callseal.compact contract/managed/callseal",
+    "compact:skip-zk": "compactc --skip-zk contract/src/callseal.compact contract/managed/callseal",
+    "test": "node --test test/*.test.mjs",
+    "demo": "node src/cli.mjs demo",
+    "build:web": "node scripts/build-web.mjs",
+    "serve": "node scripts/serve.mjs",
+    "env:up": "docker compose -f deploy/compose.yml up -d --wait",
+    "env:down": "docker compose -f deploy/compose.yml down",
+    "deploy:local": "MIDNIGHT_NETWORK=local node deploy/run.mjs",
+    "deploy:preview": "MIDNIGHT_NETWORK=preview node deploy/run.mjs",
+    "env:up:host": "docker compose -f deploy/compose.host.yml up -d --wait",
+    "env:down:host": "docker compose -f deploy/compose.host.yml down",
+    "address": "node deploy/address.mjs"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "0.16.0"
+  },
+  "optionalDependencies": {
+    "@midnight-ntwrk/midnight-js-contracts": "4.1.1",
+    "@midnight-ntwrk/midnight-js-http-client-proof-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-level-private-state-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-network-id": "4.1.1",
+    "@midnight-ntwrk/midnight-js-node-zk-config-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-protocol": "4.1.1",
+    "@midnight-ntwrk/midnight-js-types": "4.1.1",
+    "@midnight-ntwrk/midnight-js-utils": "4.1.1",
+    "@midnight-ntwrk/testkit-js": "4.1.1",
+    "@midnight-ntwrk/wallet-sdk": "1.2.0",
+    "pino": "^9.0.0",
+    "rxjs": "^7.8.2",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "overrides": {
+    "@midnight-ntwrk/wallet-sdk": "1.2.0",
+    "@midnight-ntwrk/ledger-v8": "8.1.2",
+    "@midnight-ntwrk/onchain-runtime-v3": "3.1.1",
+    "@midnight-ntwrk/zkir-v2": "2.1.1"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.env
+*.seed
+seed*.txt
+deploy/runs/*.private.json
+logs/

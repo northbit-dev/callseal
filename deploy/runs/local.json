@@ -1,0 +1,115 @@
+{
+  "network": "local",
+  "networkId": "undeployed",
+  "startedAt": "2026-10-29T22:57:54.598Z",
+  "txs": [
+    {
+      "step": "deploy",
+      "txId": "00829861c6a36485c92573f5b628389559f1727fa690989ad4be4056dc7baf110a",
+      "txHash": "b6df69f5b9c7eae0ae0c69c0399c6769fa6ddc66e6e6550b1163cdb8c2b7a405",
+      "blockHeight": 13,
+      "blockHash": "066b9ddf71db77339f49dfaf9c2575d231f547513ce85ecd11246f18935994f8",
+      "status": "SucceedEntirely",
+      "contractAddress": "7fe8033e5faba721f8db8cab03d3bdc8ab4ef71a6eaaee57ce2d64b7a91d8a37"
+    },
+    {
+      "step": "oracle.publishCloses(round 0)",
+      "txId": "00fa8e19ce14accb696581f33546aebc8fc8f044578dbbd9516e1636688fd0c2b4",
+      "txHash": "afecbef329b4685bb93fa92c3f75ac932bc9c84aec3d16c3cfb69cfc9e2b94bc",
+      "blockHeight": 16,
+      "blockHash": "6117ec9e2a31903bc83f5b548bb36c992539edb7fb8893eae8a102df8f1adfd8",
+      "status": "SucceedEntirely",
+      "result": "0"
+    },
+    {
+      "step": "alice.registerAnalyst",
+      "txId": "00f5a64546d093890980e3fafbdf12c5a58538a4e2ea08be112111e031e9504247",
+      "txHash": "02f299c52888b974814b44ca319db3dc13d1789ac432ab961cd1aeb9213c6f9c",
+      "blockHeight": 19,
+      "blockHash": "bfeb4695232dc44175e2593093e3fbfa3f2e541b8750566f862b46e84d11fa68",
+      "status": "SucceedEntirely",
+      "result": "db8190533c3c43a853366a813d18dd49ca5b392aacaab6a138b81882b44a3be7"
+    },
+    {
+      "step": "alice.sealCall #0 (private: BTC >= 101000)",
+      "txId": "008a8e9d449d801561bfc7a4f494dcf653af14d0dc291cdc7cd889aa0667203109",
+      "txHash": "9eabc7d684020e3738db19ccd593ecc012b2108531ac6fc9047d890640e1f783",
+      "blockHeight": 22,
+      "blockHash": "f35ed06ab94bd26631d07028e5d685b5c331717d7a75731214759b6214d98f81",
+      "status": "SucceedEntirely",
+      "result": "0"
+    },
+    {
+      "step": "alice.sealCall #1 (private: ETH <= 3300)",
+      "txId": "00a8a50dfb65174c76ee01a0a797f93efa682f75de2c4102a0b47b629102f06c54",
+      "txHash": "97e3779617f6a40d24767015b8df1f45a33e34dbbe9c900bb2377e97a2d38ea0",
+      "blockHeight": 25,
+      "blockHash": "bbfb4cfe5b6e2e44d6e3688050cfd198544fcd263e1c6adc9b06cdf0a47aade0",
+      "status": "SucceedEntirely",
+      "result": "1"
+    },
+    {
+      "step": "oracle.publishCloses(round 1 = expiry)",
+      "txId": "006abf7427cf43a1d21e67feccb732fb72abf105a620f4b0d18b38ab4b38748d93",
+      "txHash": "1d712f70f7b0439490a01b34dcd2fc278a913eff4c9887846049e566d5c05a91",
+      "blockHeight": 28,
+      "blockHash": "f2d5ca4c55028582770cad3444f40fea97e6a51e1eb91601cca872e247fd33b0",
+      "status": "SucceedEntirely",
+      "result": "1"
+    },
+    {
+      "step": "alice.proveHit #0 (ZK: hit, call stays sealed)",
+      "txId": "006ee47a1d070a37b763a5724980272ab22a75c142ace902c5d504fbb7068aa49f",
+      "txHash": "24341499553cc8ab3b88c27bc5310575e913881dc3b2462f608460ad164f3e2f",
+      "blockHeight": 31,
+      "blockHash": "952e53b13d543043c567c87622dd4d3a1541100dce0cbb1316592136def2642f",
+      "status": "SucceedEntirely",
+      "result": []
+    },
+    {
+      "step": "oracle.publishCloses(round 2)",
+      "txId": "0034b70a8d78593288bf8c59ae27a0963c0a8893264a22d6bbc6efa6d9891af9ad",
+      "txHash": "f6c2768fb70dd1a5bf622e4dbf22b721946db7caf8174cd691d2fe9b6be416c6",
+      "blockHeight": 34,
+      "blockHash": "ae2ae7b7d658e83111170509f60ff8115a1a3c7083e0ab62042443e0096e7608",
+      "status": "SucceedEntirely",
+      "result": "2"
+    },
+    {
+      "step": "anyone.expireCall #1 (hidden loser counted)",
+      "txId": "00a21b72fd6f5c0a0433e2ca7321a0dc58cd299223e4e2c0b3e2231d723d39449d",
+      "txHash": "cade7635888fa6054512c1c15a828f07ccb4185ede1246c4f225d972cbb5d0ae",
+      "blockHeight": 37,
+      "blockHash": "f3282bab9b409aaba496670b7b0be2954e81b18b01646f82dc438fdfddea6345",
+      "status": "SucceedEntirely",
+      "result": []
+    },
+    {
+      "step": "alice.revealCall #0 (optional disclosure)",
+      "txId": "00b97ee64fd3c5251cd2f4b46a4e64f9c0343dc55fca67130fc9252a2408cd158c",
+      "txHash": "942f8a16b07ba309bfcd8c5ec1ea0593970717d7244ac4a803ab14306e630f5e",
+      "blockHeight": 40,
+      "blockHash": "0b6e7512a44518d2b173001d311e2f3062dfb93ce047050e647f2e13d9081fd5",
+      "status": "SucceedEntirely",
+      "result": 1
+    }
+  ],
+  "contractAddress": "7fe8033e5faba721f8db8cab03d3bdc8ab4ef71a6eaaee57ce2d64b7a91d8a37",
+  "final": {
+    "round": "3",
+    "totalSealed": "2",
+    "totalHits": "1",
+    "totalMisses": "1",
+    "alice": {
+      "pk": "db8190533c3c43a853366a813d18dd49ca5b392aacaab6a138b81882b44a3be7",
+      "calls": "2",
+      "hits": "1",
+      "misses": "1"
+    },
+    "call0": "HIT",
+    "call1": "MISS",
+    "call1Revealed": false,
+    "call0Revealed": "BTC >= 101000"
+  },
+  "finishedAt": "2026-10-29T23:00:56.688Z"
+}

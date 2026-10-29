@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CallSeal · prove your trading track record, never leak a call</title>
+<meta name="description" content="Zero-knowledge trading track records on Midnight. Analysts seal calls, prove hits against oracle closes without revealing them, and every hidden loser still counts.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2311162a'/><path d='M9 14v-3a7 7 0 0 1 14 0v3' stroke='%238b7bff' stroke-width='3' fill='none'/><rect x='6' y='14' width='20' height='13' rx='3' fill='%238b7bff'/></svg>">
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">🔒</span> CallSeal <span class="tag">on Midnight</span></div>
+  <p class="lede">Prove your trading track record. <b>Never leak a call.</b></p>
+  <p class="sub">Analysts seal price calls as commitments, prove hits in zero knowledge against oracle closes, and every unproven call auto-expires into a public miss, so cherry-picking is impossible. Every button below runs the real compiled Compact circuits in your browser.</p>
+  <div id="loading">Loading Midnight runtime (WASM)…</div>
+</header>
+
+<section class="status">
+  <div><small>round</small><b id="round">–</b></div>
+  <div class="closes"><small>latest oracle close</small><div id="latest"></div></div>
+  <div><small>season</small><b id="totals"></b></div>
+  <button id="reset" class="ghost">Reset demo</button>
+</section>
+
+<main>
+  <section class="card" id="analyst">
+    <h2><span class="n">1</span> Analyst <small>private side</small></h2>
+    <div id="actors" class="tabs"></div>
+    <p class="muted mono" id="me"></p>
+    <button id="register">Register as analyst</button>
+    <div id="sealform">
+      <div class="row">
+        <label>Asset<select id="asset"><option>BTC</option><option>ETH</option><option>ADA</option><option>NIGHT</option></select></label>
+        <label>Side<select id="dir"><option value="ABOVE">close ≥ level</option><option value="BELOW">close ≤ level</option></select></label>
+        <label>Level<input id="level" type="number" step="any" value="101000"></label>
+        <label>Expiry round<input id="expiry" type="number" value="1"></label>
+        <button id="seal">Seal call</button>
+      </div>
+      <p class="hint" id="hint"></p>
+    </div>
+    <h3>Your vault <small>stays on your device</small></h3>
+    <table><thead><tr><th>id</th><th>call</th><th>expiry</th><th>status</th><th></th></tr></thead><tbody id="vault"></tbody></table>
+  </section>
+
+  <section class="card" id="oracle">
+    <h2><span class="n">2</span> Oracle <small>publishes closes</small></h2>
+    <div class="row">
+      <label>BTC<input id="close-BTC" type="number" step="any"></label>
+      <label>ETH<input id="close-ETH" type="number" step="any"></label>
+      <label>ADA<input id="close-ADA" type="number" step="any"></label>
+      <label>NIGHT<input id="close-NIGHT" type="number" step="any"></label>
+    </div>
+    <div class="row"><button id="drift" class="ghost">Random move</button><button id="publish">Publish closes for next round</button></div>
+    <p class="muted">Only the oracle key can publish. A call can be proven once the close for its expiry round exists; after the grace window, anyone can expire it to a MISS.</p>
+  </section>
+
+  <section class="card wide" id="public">
+    <h2><span class="n">3</span> Public ledger <small>what everyone (and the chain) sees</small></h2>
+    <table><thead><tr><th>id</th><th>analyst</th><th>commitment</th><th>rounds</th><th>status</th><th>call</th><th></th></tr></thead><tbody id="ledger"></tbody></table>
+    <h3>Leaderboard</h3>
+    <table><thead><tr><th>#</th><th>analyst</th><th>calls</th><th>hits</th><th>misses</th><th>open</th><th>hit rate</th></tr></thead><tbody id="board"></tbody></table>
+  </section>
+
+  <section class="card" id="verify">
+    <h2><span class="n">4</span> Subscriber <small>verify a privately shared call</small></h2>
+    <p class="muted">An analyst can send the opening to paying subscribers only. Anyone holding it can check it against the on-chain commitment, so the analyst cannot edit the call afterwards.</p>
+    <textarea id="verify-input" rows="8" placeholder='Click "Share privately" on a call in the vault'></textarea>
+    <button id="verify-btn">Verify against ledger</button>
+    <p id="verify-out"></p>
+  </section>
+
+  <section class="card" id="log">
+    <h2>Transaction log <small>public effect of each circuit call</small></h2>
+    <ul id="events"></ul>
+  </section>
+
+  <section class="card wide">
+    <h2>On-chain run</h2>
+    <div id="onchain"></div>
+  </section>
+</main>
+<footer>CallSeal by northbit · Apache-2.0 · Built for the Midnight Network hackathon. Demo runs locally in your browser; no wallet, no data leaves this tab.</footer>
+<div id="toast"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
