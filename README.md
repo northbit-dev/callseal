@@ -11,6 +11,7 @@ An analyst seals a price call ("BTC closes ≥ 101,000 at round 5") as a commitm
 
 > Live demo (static, runs the real circuits in your browser): `npm run build:web && npm run serve` → http://127.0.0.1:5173
 > Real network run with ZK proofs: [docs/onchain-proof.md](docs/onchain-proof.md)
+> Pitch deck: [docs/deck.pdf](docs/deck.pdf) · Demo video (86 s, captions, no audio): [docs/demo.mp4](docs/demo.mp4)
 
 ![CallSeal demo](docs/screenshot.png)
 
@@ -113,7 +114,7 @@ MIDNIGHT_NETWORK=preview MIDNIGHT_SEED_FILE=/path/to/seed npm run deploy:preview
 
 The script waits for NIGHT, registers it for DUST generation, waits for DUST, then runs the same season as on the local network. The seed is read from a file and never printed.
 
-**Status:** CallSeal is deployed on preview at `cd9c5b5ace4dbe98c84555dde9ae71910e028aaba31cfe7453e2ec6daccca361`. The deploy and the first six steps succeeded. `proveHit` is currently blocked by a wallet-SDK fee-estimation hang on preview, so the full season is shown on the local network for now. Details are in [docs/onchain-proof.md](docs/onchain-proof.md).
+**Status:** the full season ran on preview: contract `5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0`, 10 transactions, all `SucceedEntirely`. Hashes and explorer links are in [docs/onchain-proof.md](docs/onchain-proof.md).
 
 ## Tests
 
@@ -138,7 +139,7 @@ src/cli.mjs                     terminal demo and subscriber verify command
 test/                           node:test suite
 web/                            static browser demo (esbuild → web/dist)
 deploy/                         docker compose, network config, end-to-end network script
-docs/                           architecture, on-chain proof, deck outline, video script, demo recording
+docs/                           architecture, on-chain proof, deck (PDF + HTML source in docs/deck/), demo video
 ```
 
 ## Limitations and roadmap

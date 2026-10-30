@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CallSeal: pitch deck</title>
+<style>
+@page { size: 1920px 1080px; margin: 0; }
+:root { --bg:#0b0e1f; --card:#141a33; --line:#262e55; --acc:#8b7bff; --acc2:#5fe0b7; --miss:#ff7a90; --tx:#eef0ff; --mut:#9aa0c8; }
+* { box-sizing: border-box; }
+html, body { margin:0; background:#000; }
+body { font-family: Inter, sans-serif; color: var(--tx); }
+.slide { width:1920px; height:1080px; padding:96px 120px 80px; background:var(--bg); position:relative; overflow:hidden; page-break-after:always; break-after:page; display:flex; flex-direction:column; }
+.slide:last-child { page-break-after:auto; break-after:auto; }
+.slide::before { content:""; position:absolute; right:-260px; top:-260px; width:720px; height:720px; border-radius:50%; background:radial-gradient(circle, rgba(139,123,255,.22), transparent 65%); }
+.kicker { font-size:24px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); margin:0 0 18px; }
+h1 { font-size:68px; line-height:1.08; margin:0 0 36px; font-weight:800; letter-spacing:-.02em; max-width:1500px; }
+h2 { font-size:32px; margin:0 0 14px; font-weight:700; }
+p, li { font-size:30px; line-height:1.45; color:#d6d9f5; }
+p { margin:0 0 18px; }
+ul { margin:0; padding-left:34px; } li { margin-bottom:14px; }
+b { color:#fff; }
+.mut { color:var(--mut); }
+.mono { font-family: "DejaVu Sans Mono", monospace; }
+.foot { position:absolute; left:120px; right:120px; bottom:40px; display:flex; justify-content:space-between; font-size:20px; color:#6d739d; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:48px; flex:1; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:38px 40px; }
+.card p, .card li { font-size:27px; }
+.big { font-size:92px; font-weight:800; color:var(--acc); line-height:1; margin-bottom:12px; }
+.pill { display:inline-block; padding:4px 16px; border-radius:999px; font-size:22px; font-weight:700; border:2px solid; }
+.hit { color:var(--acc2); border-color:var(--acc2); } .miss { color:var(--miss); border-color:var(--miss); } .sealed { color:var(--acc); border-color:var(--acc); }
+table { border-collapse:collapse; width:100%; }
+td, th { text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); font-size:23px; }
+th { color:var(--mut); font-weight:600; font-size:20px; text-transform:uppercase; letter-spacing:.06em; }
+.flow { display:grid; grid-template-columns:repeat(4,1fr); gap:28px; margin-top:8px; }
+.step { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:30px 30px; position:relative; }
+.step .n { width:54px; height:54px; border-radius:50%; background:var(--acc); color:#0b0e1f; font-weight:800; font-size:28px; display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+.step h2 { font-size:30px; } .step p { font-size:24px; margin:0; }
+.step code, .card code, p code { font-family:"DejaVu Sans Mono", monospace; font-size:.85em; color:#c9c1ff; }
+.title { justify-content:center; }
+.title h1 { font-size:120px; margin-bottom:24px; }
+.title .tag { font-size:44px; color:#c9c6ff; font-weight:500; margin-bottom:60px; }
+.logo { width:120px; height:120px; margin-bottom:40px; }
+.links p { font-size:28px; margin:6px 0; }
+.arch { display:grid; grid-template-columns:1fr 120px 1fr 120px 1fr; align-items:stretch; gap:0; margin-bottom:34px; }
+.arrow { display:flex; align-items:center; justify-content:center; font-size:56px; color:var(--acc); }
+.shot { width:100%; border-radius:18px; border:1px solid var(--line); display:block; }
+</style>
+</head>
+<body>
+
+<section class="slide title">
+  <svg class="logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#1c2244"/><path d="M9 14v-3a7 7 0 0 1 14 0v3" stroke="#8b7bff" stroke-width="3" fill="none"/><rect x="6" y="14" width="20" height="13" rx="3" fill="#8b7bff"/></svg>
+  <h1>CallSeal</h1>
+  <div class="tag">Prove your trading track record. Never leak a call.</div>
+  <div class="links">
+    <p>Zero-knowledge trading calls on <b>Midnight</b>, written in <b>Compact</b></p>
+    <p class="mut">github.com/northbit-dev/callseal · northbit-dev.github.io/callseal</p>
+  </div>
+  <div class="foot"><span>northbit · Midnight Network hackathon</span><span>Apache-2.0</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">The problem</div>
+  <h1>Paid trading signals are sold on track records nobody can check.</h1>
+  <div class="grid3">
+    <div class="card"><h2>Screenshots</h2><p>Winners get posted, losers get deleted. A "78 % hit rate" is whatever the seller decides to show.</p></div>
+    <div class="card"><h2>Public calls leak</h2><p>Posting every call openly proves the record, but gives the product away to non-payers and front-runners.</p></div>
+    <div class="card"><h2>Trusted platforms</h2><p>"Verified" signal sites see every call. The analyst has to trust the platform, and so does the buyer.</p></div>
+  </div>
+  <p style="margin-top:48px">Telegram and Discord groups, newsletters and research desks all run on the same thing: <b>trust in a number that can't be audited.</b></p>
+  <div class="foot"><span>CallSeal</span><span>2</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">The solution</div>
+  <h1>Make the record public and keep the calls private.</h1>
+  <div class="grid2" style="flex:0">
+    <div>
+      <ul>
+        <li>The analyst <b>seals</b> each call as a commitment on Midnight.</li>
+        <li>After the close, they <b>prove a hit in zero knowledge</b>, without revealing asset, side or level.</li>
+        <li>Every call that is not proven in time becomes a <b>public MISS</b>. Hiding losers is impossible.</li>
+        <li>Paying subscribers can get the opening privately and <b>check it against the chain</b>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th></th><th>public ledger</th><th>analyst's device</th></tr>
+        <tr><td><b>analyst</b></td><td>key, calls, hits, misses</td><td>secret key</td></tr>
+        <tr><td><b>call</b></td><td>commitment, rounds, status</td><td>asset, side, level, salt</td></tr>
+        <tr><td><b>oracle</b></td><td>closes per round</td><td>oracle key</td></tr>
+      </table>
+      <p class="mut" style="font-size:23px;margin:22px 0 0">What leaks by design is the track record itself: who called, when, and whether it hit.</p>
+    </div>
+  </div>
+  <div class="foot"><span>CallSeal</span><span>3</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">How it works · ZK and Compact</div>
+  <h1>Four steps, each one a Compact circuit.</h1>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><h2>Seal</h2><p><code>sealCall</code> stores H(author, H(opening)). The proof also checks the level is at least 2 % from the last close, so trivial calls can't farm hits.</p></div>
+    <div class="step"><div class="n">2</div><h2>Publish</h2><p><code>publishCloses</code>: only the oracle key can post the closes for a round. The oracle never sees any call.</p></div>
+    <div class="step"><div class="n">3</div><h2>Prove hit</h2><p><code>proveHit</code> opens the commitment inside the proof and checks it beats the expiry close. The chain learns only <span class="pill hit">HIT</span>.</p></div>
+    <div class="step"><div class="n">4</div><h2>Expire</h2><p><code>expireCall</code>: after the grace window, anyone can turn an unproven call into a <span class="pill miss">MISS</span>.</p></div>
+  </div>
+  <div class="card" style="margin-top:36px">
+    <p style="margin:0;font-size:26px"><b>Enforced inside the proof:</b> commitments are bound to their author, so copies can't be proven · calls can't be edited after sealing · no proving before the close or after the window · no double settlement · hedging both sides still scores a MISS. <code>proveHit</code> reads the full close vector, so its public transcript is identical whatever asset the call was on.</p>
+  </div>
+  <div class="foot"><span>CallSeal</span><span>4</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Architecture</div>
+  <h1>Secrets stay on the device. Only proofs reach the chain.</h1>
+  <div class="arch">
+    <div class="card"><h2>Analyst device</h2><p>Private state: secret key and call openings. Witnesses <code>localSecretKey</code>, <code>pendingCall</code>, <code>storedOpening</code> feed the circuits.</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><h2>Proof server</h2><p>Generates the ZK proof from the compiled circuit (compactc 0.31.1, proof server 8.1.3). Only public outputs leave it.</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><h2>Midnight ledger</h2><p>Contract with 6 circuits: commitments, rounds, closes, status and per-analyst stats. Read back through the indexer.</p></div>
+  </div>
+  <div class="grid3">
+    <div class="card"><p style="margin:0"><b>Contract</b><br><code>contract/src/callseal.compact</code></p></div>
+    <div class="card"><p style="margin:0"><b>Shared logic</b><br>witnesses, commitments and a simulator, used by Node and the browser</p></div>
+    <div class="card"><p style="margin:0"><b>Clients</b><br>static web demo, CLI demo, network runner using midnight-js 4.1.1</p></div>
+  </div>
+  <div class="foot"><span>CallSeal</span><span>5</span></div>
+</section>
+
+<section class="slide" style="padding-top:72px">
+  <div class="kicker">On-chain proof · Midnight preview testnet</div>
+  <h1 style="font-size:54px;margin-bottom:20px">A full season, 10 transactions, all <span style="color:var(--acc2)">SucceedEntirely</span>.</h1>
+  <p class="mut" style="font-size:22px;margin-bottom:14px">Contract <span class="mono">5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0</span> · preview.midnightexplorer.com</p>
+  <table>
+    <tr><th>step</th><th>tx hash</th><th>block</th></tr>
+    <tr><td>deploy</td><td class="mono">ca04ff67ce5be0aacf3704eb5d9609957816d7f343fa36b57c29aaeb5b9749d7</td><td>1517967</td></tr>
+    <tr><td>oracle.publishCloses (round 0)</td><td class="mono">0a330c0a9e3b0439eacedd26f74f4a5abdb0923cd2a42a257a0892fe6b13fba1</td><td>1517970</td></tr>
+    <tr><td>alice.registerAnalyst</td><td class="mono">59c0aebcddcee7456b8d18427255abed21fcc97b955d887fad69a829d7dfdcde</td><td>1517973</td></tr>
+    <tr><td>alice.sealCall #0</td><td class="mono">ac4b3e968914a5f4da2c5087aa4dd545dccf1a02438179d6d9829e9ba65b1f05</td><td>1517976</td></tr>
+    <tr><td>alice.sealCall #1</td><td class="mono">25cc5aedbfebb2fe60e137396b66e35069ee59db6c8e5f1839ce81c1a6096796</td><td>1517979</td></tr>
+    <tr><td>oracle.publishCloses (round 1)</td><td class="mono">9dcd644b401a6c4a8df2a40da35bd945979926bfae84c221656aae0a7d5e7dfa</td><td>1517982</td></tr>
+    <tr><td>alice.proveHit #0 <span class="pill hit">HIT</span></td><td class="mono">74f248faa0cf23567b77f8cd97b71169a8591281a2968d8b58434376b4fe7f59</td><td>1517985</td></tr>
+    <tr><td>oracle.publishCloses (round 2)</td><td class="mono">3f177e02eefdddfc70dcd63332a9adec3e54a56e9f6b3a2c5e0349011c8809a6</td><td>1517988</td></tr>
+    <tr><td>anyone.expireCall #1 <span class="pill miss">MISS</span></td><td class="mono">f6756f6f7534b7fef0204ff6c117ce7b394d7072deacde51dd6a33000ac6806d</td><td>1517991</td></tr>
+    <tr><td>alice.revealCall #0 (optional)</td><td class="mono">da80936ba0dcc0a6436e5725747474d8aec5dcd4e9b22e8c72ea1d5d37180004</td><td>1517995</td></tr>
+  </table>
+  <div class="foot"><span>Every hash checked against the preview indexer · full list in docs/onchain-proof.md</span><span>6</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">Demo</div>
+  <h1>The real circuits, running in your browser.</h1>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:start">
+    <img class="shot" src="demo-ledger.png" alt="CallSeal demo: public ledger with one HIT and one MISS, leaderboard at 50 %">
+    <div>
+      <ul>
+        <li>Seal a call; a trivial one is rejected by the circuit.</li>
+        <li>Publish closes as the oracle.</li>
+        <li>Prove a hit: <span class="pill hit">HIT</span>, the call stays sealed.</li>
+        <li>Expire the loser: <span class="pill miss">MISS</span>.</li>
+        <li>Leaderboard: 2 calls, 1 hit, 1 miss, <b>50 %</b>.</li>
+        <li>Verify a shared opening; an edited level fails.</li>
+      </ul>
+      <p class="mut" style="margin-top:28px;font-size:26px">northbit-dev.github.io/callseal<br>No wallet needed. Nothing leaves the tab.</p>
+    </div>
+  </div>
+  <div class="foot"><span>CallSeal</span><span>7</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">What's new · what's next</div>
+  <h1>An honest hit rate, without giving the product away.</h1>
+  <div class="grid2" style="flex:0">
+    <div class="card">
+      <h2>What's new</h2>
+      <ul>
+        <li>Selective disclosure as the product: record public, calls private</li>
+        <li>Hidden losers still count, enforced by the protocol</li>
+        <li>Anti-gaming rules live inside the proofs</li>
+        <li>27 tests, including privacy leak scans</li>
+        <li>Full season on preview, plus a DUST fee-balancing fix</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Next steps</h2>
+      <ul>
+        <li>k-of-n oracle committee or an on-chain price feed</li>
+        <li>Paid access to openings with shielded tokens</li>
+        <li>Season registry and minimum call counts against key farming</li>
+        <li>Lace wallet in the web app</li>
+        <li>Batched windows to hide timing; more assets</li>
+      </ul>
+    </div>
+  </div>
+  <p class="mut" style="margin-top:40px;font-size:26px">Signal groups · research newsletters · prop-firm hiring on a verifiable record · copy trading</p>
+  <div class="foot"><span>github.com/northbit-dev/callseal</span><span>8</span></div>
+</section>
+
+</body>
+</html>
