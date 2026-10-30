@@ -21,9 +21,11 @@ import { CompiledContract } from '@midnight-ntwrk/midnight-js-protocol/compact-j
 import { indexerPublicDataProvider } from '@midnight-ntwrk/midnight-js-indexer-public-data-provider';
 import { httpClientProofProvider } from '@midnight-ntwrk/midnight-js-http-client-proof-provider';
 import { NodeZkConfigProvider } from '@midnight-ntwrk/midnight-js-node-zk-config-provider';
-import { MidnightWalletProvider, syncWallet, inMemoryPrivateStateProvider } from '@midnight-ntwrk/testkit-js';
+import {
+  MidnightWalletProvider, FluentWalletBuilder, DEFAULT_DUST_OPTIONS, syncWallet, inMemoryPrivateStateProvider,
+} from '@midnight-ntwrk/testkit-js';
 import * as Rx from 'rxjs';
-import { unshieldedToken } from '@midnight-ntwrk/midnight-js-protocol/ledger';
+import { unshieldedToken, ZswapSecretKeys, DustSecretKey } from '@midnight-ntwrk/midnight-js-protocol/ledger';
 import { Contract, ledger } from '../contract/managed/callseal/contract/index.js';
 import {
   witnesses, newPrivateState, makeOpening, publicKeyOf, toFixed, hex, statusName, randomBytes, describeOpening,
@@ -53,6 +55,22 @@ function readSeed() {
   const f = process.env.MIDNIGHT_SEED_FILE;
   if (!f) throw new Error('MIDNIGHT_SEED_FILE is required for remote networks');
   return fs.readFileSync(f, 'utf8').trim();
+}
+
+// Why: once an idle chain's fee price sits at its floor, a cheap call like proveHit costs 0 DUST before
+// balancing. The dust wallet (wallet-sdk-dust-wallet 4.x) then selects no DUST inputs and either loops
+// forever or builds an empty DustActions intent that panics in the ledger wasm ("unreachable").
+// A small fixed overhead keeps every fee above zero so the wallet always spends one DUST coin.
+const FEE_OVERHEAD_SPECKS = 1_000_000_000n;
+
+async function buildWallet(seed) {
+  const { wallet, seeds, keystore } = await FluentWalletBuilder.forEnvironment(net)
+    .withSeed(seed)
+    .withDustOptions({ ...DEFAULT_DUST_OPTIONS, additionalFeeOverhead: FEE_OVERHEAD_SPECKS })
+    .buildWithoutStarting();
+  return MidnightWalletProvider.withWallet(
+    logger, net, wallet, ZswapSecretKeys.fromSeed(seeds.shielded), DustSecretKey.fromSeed(seeds.dust), keystore,
+  );
 }
 
 const CompiledCallSeal = CompiledContract.make('CallSeal', Contract).pipe(
@@ -101,7 +119,7 @@ async function registerNightForDust(provider) {
 async function main() {
   setNetworkId(net.networkId);
   say(`network: ${net.name} (${net.networkId})`);
-  const wallet = await MidnightWalletProvider.build(logger, net, readSeed());
+  const wallet = await buildWallet(readSeed());
   if (net.name === 'local') {
     // Local dev genesis wallet: already funded, DUST already generating.
     await wallet.start();

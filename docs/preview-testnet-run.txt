@@ -1,0 +1,19 @@
+[02:53:24Z] network: preview (preview)
+[03:08:14Z] unshielded address: mn_addr_preview1vnd28esvfdtf55my6ds8aezx3704kxfcga2nu8c3unyzhxc88k7qv2vjk9
+[03:08:14Z] waiting for NIGHT from the faucet ...
+[03:08:14Z] wallet already holds DUST
+[03:08:14Z] wallet synced; unshielded address: mn_addr_preview1vnd28esvfdtf55my6ds8aezx3704kxfcga2nu8c3unyzhxc88k7qv2vjk9
+[03:08:14Z] waiting for spendable DUST ...
+[03:08:14Z] deploying CallSeal ...
+[03:08:33Z] ✔ deploy  tx ca04ff67ce5be0aacf3704eb5d9609957816d7f343fa36b57c29aaeb5b9749d7  block 1517967
+[03:08:51Z] ✔ oracle.publishCloses(round 0)  tx 0a330c0a9e3b0439eacedd26f74f4a5abdb0923cd2a42a257a0892fe6b13fba1  block 1517970
+[03:09:07Z] ✔ alice.registerAnalyst  tx 59c0aebcddcee7456b8d18427255abed21fcc97b955d887fad69a829d7dfdcde  block 1517973
+[03:09:26Z] ✔ alice.sealCall #0 (private: BTC >= 101000)  tx ac4b3e968914a5f4da2c5087aa4dd545dccf1a02438179d6d9829e9ba65b1f05  block 1517976
+[03:09:43Z] ✔ alice.sealCall #1 (private: ETH <= 3300)  tx 25cc5aedbfebb2fe60e137396b66e35069ee59db6c8e5f1839ce81c1a6096796  block 1517979
+[03:10:02Z] ✔ oracle.publishCloses(round 1 = expiry)  tx 9dcd644b401a6c4a8df2a40da35bd945979926bfae84c221656aae0a7d5e7dfa  block 1517982
+[03:10:19Z] ✔ alice.proveHit #0 (ZK: hit, call stays sealed)  tx 74f248faa0cf23567b77f8cd97b71169a8591281a2968d8b58434376b4fe7f59  block 1517985
+[03:10:38Z] ✔ oracle.publishCloses(round 2)  tx 3f177e02eefdddfc70dcd63332a9adec3e54a56e9f6b3a2c5e0349011c8809a6  block 1517988
+[03:10:57Z] ✔ anyone.expireCall #1 (hidden loser counted)  tx f6756f6f7534b7fef0204ff6c117ce7b394d7072deacde51dd6a33000ac6806d  block 1517991
+[03:11:20Z] ✔ alice.revealCall #0 (optional disclosure)  tx da80936ba0dcc0a6436e5725747474d8aec5dcd4e9b22e8c72ea1d5d37180004  block 1517995
+[03:11:21Z] final on-chain state: {"round":"3","totalSealed":"2","totalHits":"1","totalMisses":"1","alice":{"pk":"7805cb631315e693bdc5042ee4267fb1519384686d01fe56eabe2e3847d91cbc","calls":"2","hits":"1","misses":"1"},"call0":"HIT","call1":"MISS","call1Revealed":false,"call0Revealed":"BTC >= 101000"}
+[03:11:21Z] contract 5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0 — wrote deploy/runs/preview.json

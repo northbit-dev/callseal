@@ -1,46 +1,115 @@
 {
   "network": "preview",
   "networkId": "preview",
-  "contractAddress": "cd9c5b5ace4dbe98c84555dde9ae71910e028aaba31cfe7453e2ec6daccca361",
-  "startedAt": "2026-10-29T23:13:40Z",
-  "partial": true,
-  "note": "Stopped before alice.proveHit: the DUST fee estimate in the wallet SDK did not return for that transaction on preview (see docs/onchain-proof.md).",
+  "startedAt": "2026-10-30T03:08:14.571Z",
   "txs": [
     {
       "step": "deploy",
-      "txHash": "38cc8a4dbbe197360b5b0ef34d5874e1118700d73005d8bb2cfc1ff07c13c2e8",
-      "blockHeight": 1515783,
-      "status": "SucceedEntirely"
+      "txId": "0075d278ff6821db13eeb244aff86a11b2628eca70b99560d53a179cc68de3274a",
+      "txHash": "ca04ff67ce5be0aacf3704eb5d9609957816d7f343fa36b57c29aaeb5b9749d7",
+      "blockHeight": 1517967,
+      "blockHash": "26c9168092060f6ff784b7505e502bb84eb1bb3962fc2fe1c7ef9fe1360f6b70",
+      "status": "SucceedEntirely",
+      "contractAddress": "5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0"
     },
     {
       "step": "oracle.publishCloses(round 0)",
-      "txHash": "bd0c0f848a1704ed0e3710cab94b17085d0ea024966c47d28dd9b487f7bec4d9",
-      "blockHeight": 1515789,
-      "status": "SucceedEntirely"
+      "txId": "00da07c0c928450da64b649253667a8385fc899e0f01a0887c916e81c8d26f730b",
+      "txHash": "0a330c0a9e3b0439eacedd26f74f4a5abdb0923cd2a42a257a0892fe6b13fba1",
+      "blockHeight": 1517970,
+      "blockHash": "dad77c4ed56ee5f7cbe9d6488b9feb6e64650c5d9d26b2287ba287e17b40ca4f",
+      "status": "SucceedEntirely",
+      "result": "0"
     },
     {
       "step": "alice.registerAnalyst",
-      "txHash": "20bfafbdb916e776e1a3db74b159a1e4c0a646a885dbc808238346c08ffc6c0f",
-      "blockHeight": 1515792,
-      "status": "SucceedEntirely"
+      "txId": "00a87683760d01991d87c3ad4a8173b657d7ffde0a43cbfcf6ec01771e691f8071",
+      "txHash": "59c0aebcddcee7456b8d18427255abed21fcc97b955d887fad69a829d7dfdcde",
+      "blockHeight": 1517973,
+      "blockHash": "a8ced6b332fb0b8e699bf5705d366541cce2043bbf4094c8c9a094364cdecd2e",
+      "status": "SucceedEntirely",
+      "result": "7805cb631315e693bdc5042ee4267fb1519384686d01fe56eabe2e3847d91cbc"
     },
     {
       "step": "alice.sealCall #0 (private: BTC >= 101000)",
-      "txHash": "0e2f51da4d60444af00b61c8c6ea76172a225a3e1babe857ee8c3dbb04643dae",
-      "blockHeight": 1515795,
-      "status": "SucceedEntirely"
+      "txId": "00e7bac512fb0773f12b6afe312a4e7ccd6318c0f1274fc12431303b999879679f",
+      "txHash": "ac4b3e968914a5f4da2c5087aa4dd545dccf1a02438179d6d9829e9ba65b1f05",
+      "blockHeight": 1517976,
+      "blockHash": "f0401669d63a93c3695eb92093ad0afca142a0569aec826db856acb76b7b752d",
+      "status": "SucceedEntirely",
+      "result": "0"
     },
     {
       "step": "alice.sealCall #1 (private: ETH <= 3300)",
-      "txHash": "55bbfd4ea4b98ef5e8f670d4fdd5532b7144019ad12730d5aeaf274eb92f1ce0",
-      "blockHeight": 1515799,
-      "status": "SucceedEntirely"
+      "txId": "008803fb5b0e5561fb95d5d328ad0b223a7c9a9cdefc3839a8f1b527536eebb518",
+      "txHash": "25cc5aedbfebb2fe60e137396b66e35069ee59db6c8e5f1839ce81c1a6096796",
+      "blockHeight": 1517979,
+      "blockHash": "ff5d24d0b93943146a2a0b7da54af6bf5c10e863d15fc3818e2a71675bd5ab75",
+      "status": "SucceedEntirely",
+      "result": "1"
     },
     {
       "step": "oracle.publishCloses(round 1 = expiry)",
-      "txHash": "f0be7960467c8ac64ef1afa8b42494038515260b4cc9a15e8fdf3225ce8dee55",
-      "blockHeight": 1515802,
-      "status": "SucceedEntirely"
+      "txId": "001f35ff50c631d89908630e464bec15dce1304e2dd0d8db3fd9e1bf95238db246",
+      "txHash": "9dcd644b401a6c4a8df2a40da35bd945979926bfae84c221656aae0a7d5e7dfa",
+      "blockHeight": 1517982,
+      "blockHash": "be3239c7e17a0dc1ee12c62746534834c77b2bf65add93cd4c1640b28ab2c60a",
+      "status": "SucceedEntirely",
+      "result": "1"
+    },
+    {
+      "step": "alice.proveHit #0 (ZK: hit, call stays sealed)",
+      "txId": "004bfc92d94e581345cbabe91db9ada014c5d1a22888624d0edde4dc883ef15af0",
+      "txHash": "74f248faa0cf23567b77f8cd97b71169a8591281a2968d8b58434376b4fe7f59",
+      "blockHeight": 1517985,
+      "blockHash": "91d7dbe9ad2395fda0218910a4ed9e0fc391dc9b2319268fbee152dc61f4eb63",
+      "status": "SucceedEntirely",
+      "result": []
+    },
+    {
+      "step": "oracle.publishCloses(round 2)",
+      "txId": "000ee50526ec664339a24e1e78e1ba974c0121a48f2d0a2e03d7ccf77435d116c4",
+      "txHash": "3f177e02eefdddfc70dcd63332a9adec3e54a56e9f6b3a2c5e0349011c8809a6",
+      "blockHeight": 1517988,
+      "blockHash": "32335e38f272fe5b76860793556c5073e2831ac8723a03a21ae8b82c96c1d09f",
+      "status": "SucceedEntirely",
+      "result": "2"
+    },
+    {
+      "step": "anyone.expireCall #1 (hidden loser counted)",
+      "txId": "00362c2deef6ec20ef25184808c3f2a3c6f2ff630d65841f5f340515232e3ddf5f",
+      "txHash": "f6756f6f7534b7fef0204ff6c117ce7b394d7072deacde51dd6a33000ac6806d",
+      "blockHeight": 1517991,
+      "blockHash": "0e81bce44768ea702e34304777a5613a22cfd4bca4bf3e78426a20ef421e871a",
+      "status": "SucceedEntirely",
+      "result": []
+    },
+    {
+      "step": "alice.revealCall #0 (optional disclosure)",
+      "txId": "000e29f5abdf41f2c03350752f0e015426d69029f17542a10cbffc92b4b3206ad1",
+      "txHash": "da80936ba0dcc0a6436e5725747474d8aec5dcd4e9b22e8c72ea1d5d37180004",
+      "blockHeight": 1517995,
+      "blockHash": "937de8df01df1b51ee01e023c0e8b3f27d334c2ef7110bf9be0c187474fbd759",
+      "status": "SucceedEntirely",
+      "result": 1
     }
-  ]
+  ],
+  "contractAddress": "5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0",
+  "final": {
+    "round": "3",
+    "totalSealed": "2",
+    "totalHits": "1",
+    "totalMisses": "1",
+    "alice": {
+      "pk": "7805cb631315e693bdc5042ee4267fb1519384686d01fe56eabe2e3847d91cbc",
+      "calls": "2",
+      "hits": "1",
+      "misses": "1"
+    },
+    "call0": "HIT",
+    "call1": "MISS",
+    "call1Revealed": false,
+    "call0Revealed": "BTC >= 101000"
+  },
+  "finishedAt": "2026-10-30T03:11:21.065Z"
 }

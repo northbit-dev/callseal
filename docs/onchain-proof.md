@@ -55,42 +55,47 @@ npm run deploy:local
 
 The run was repeated on a fresh contract (`287e48e6…bc33a`, blocks 121–148) with the same result.
 
-A testnet (preview) run uses the same script with `MIDNIGHT_NETWORK=preview`; see the README.
+## Midnight preview testnet
 
-## Midnight preview testnet (partial)
+The full season also ran on the public Midnight **preview** network (`MIDNIGHT_NETWORK=preview`,
+indexer `indexer.preview.midnight.network`, local proof server 8.1.3), with the same contract and script.
+All ten transactions are final with status `SucceedEntirely`, and each one was checked by hash against the preview indexer.
 
-The same contract and script were run against the public Midnight **preview** network
-(`MIDNIGHT_NETWORK=preview`, indexer `indexer.preview.midnight.network`, local proof server 8.1.3).
-Deployment and the first six steps went through with real proofs; the SDK only returns once a
-transaction is final with status `SucceedEntirely`.
-
-* contract address: `cd9c5b5ace4dbe98c84555dde9ae71910e028aaba31cfe7453e2ec6daccca361` (deploy tx confirmed on the preview indexer, block 1515783)
-* raw result: [`deploy/runs/preview.json`](../deploy/runs/preview.json)
+* contract address: [`5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0`](https://preview.midnightexplorer.com/contracts/5a5f66f9c70bad0470f50716dcdf130a33f3f40932df387e9d423ac7fa4e6db0)
+* explorer: [preview.midnightexplorer.com](https://preview.midnightexplorer.com) (the official Night Scan explorer uses the same path: `explorer.preview.midnight.network/transactions/<hash>`)
+* raw result: [`deploy/runs/preview.json`](../deploy/runs/preview.json), log: [`preview-testnet-run.txt`](preview-testnet-run.txt)
 
 | step | tx hash | block | status |
 |---|---|---|---|
-| deploy | `38cc8a4dbbe197360b5b0ef34d5874e1118700d73005d8bb2cfc1ff07c13c2e8` | 1515783 | SucceedEntirely |
-| oracle.publishCloses(round 0) | `bd0c0f848a1704ed0e3710cab94b17085d0ea024966c47d28dd9b487f7bec4d9` | 1515789 | SucceedEntirely |
-| alice.registerAnalyst | `20bfafbdb916e776e1a3db74b159a1e4c0a646a885dbc808238346c08ffc6c0f` | 1515792 | SucceedEntirely |
-| alice.sealCall #0 (private: BTC >= 101000) | `0e2f51da4d60444af00b61c8c6ea76172a225a3e1babe857ee8c3dbb04643dae` | 1515795 | SucceedEntirely |
-| alice.sealCall #1 (private: ETH <= 3300) | `55bbfd4ea4b98ef5e8f670d4fdd5532b7144019ad12730d5aeaf274eb92f1ce0` | 1515799 | SucceedEntirely |
-| oracle.publishCloses(round 1 = expiry) | `f0be7960467c8ac64ef1afa8b42494038515260b4cc9a15e8fdf3225ce8dee55` | 1515802 | SucceedEntirely |
+| deploy | [`ca04ff67ce5be0aacf3704eb5d9609957816d7f343fa36b57c29aaeb5b9749d7`](https://preview.midnightexplorer.com/transactions/ca04ff67ce5be0aacf3704eb5d9609957816d7f343fa36b57c29aaeb5b9749d7) | 1517967 | SucceedEntirely |
+| oracle.publishCloses(round 0) | [`0a330c0a9e3b0439eacedd26f74f4a5abdb0923cd2a42a257a0892fe6b13fba1`](https://preview.midnightexplorer.com/transactions/0a330c0a9e3b0439eacedd26f74f4a5abdb0923cd2a42a257a0892fe6b13fba1) | 1517970 | SucceedEntirely |
+| alice.registerAnalyst | [`59c0aebcddcee7456b8d18427255abed21fcc97b955d887fad69a829d7dfdcde`](https://preview.midnightexplorer.com/transactions/59c0aebcddcee7456b8d18427255abed21fcc97b955d887fad69a829d7dfdcde) | 1517973 | SucceedEntirely |
+| alice.sealCall #0 (private: BTC >= 101000) | [`ac4b3e968914a5f4da2c5087aa4dd545dccf1a02438179d6d9829e9ba65b1f05`](https://preview.midnightexplorer.com/transactions/ac4b3e968914a5f4da2c5087aa4dd545dccf1a02438179d6d9829e9ba65b1f05) | 1517976 | SucceedEntirely |
+| alice.sealCall #1 (private: ETH <= 3300) | [`25cc5aedbfebb2fe60e137396b66e35069ee59db6c8e5f1839ce81c1a6096796`](https://preview.midnightexplorer.com/transactions/25cc5aedbfebb2fe60e137396b66e35069ee59db6c8e5f1839ce81c1a6096796) | 1517979 | SucceedEntirely |
+| oracle.publishCloses(round 1 = expiry) | [`9dcd644b401a6c4a8df2a40da35bd945979926bfae84c221656aae0a7d5e7dfa`](https://preview.midnightexplorer.com/transactions/9dcd644b401a6c4a8df2a40da35bd945979926bfae84c221656aae0a7d5e7dfa) | 1517982 | SucceedEntirely |
+| alice.proveHit #0 (ZK: hit, call stays sealed) | [`74f248faa0cf23567b77f8cd97b71169a8591281a2968d8b58434376b4fe7f59`](https://preview.midnightexplorer.com/transactions/74f248faa0cf23567b77f8cd97b71169a8591281a2968d8b58434376b4fe7f59) | 1517985 | SucceedEntirely |
+| oracle.publishCloses(round 2) | [`3f177e02eefdddfc70dcd63332a9adec3e54a56e9f6b3a2c5e0349011c8809a6`](https://preview.midnightexplorer.com/transactions/3f177e02eefdddfc70dcd63332a9adec3e54a56e9f6b3a2c5e0349011c8809a6) | 1517988 | SucceedEntirely |
+| anyone.expireCall #1 (hidden loser counted) | [`f6756f6f7534b7fef0204ff6c117ce7b394d7072deacde51dd6a33000ac6806d`](https://preview.midnightexplorer.com/transactions/f6756f6f7534b7fef0204ff6c117ce7b394d7072deacde51dd6a33000ac6806d) | 1517991 | SucceedEntirely |
+| alice.revealCall #0 (optional disclosure) | [`da80936ba0dcc0a6436e5725747474d8aec5dcd4e9b22e8c72ea1d5d37180004`](https://preview.midnightexplorer.com/transactions/da80936ba0dcc0a6436e5725747474d8aec5dcd4e9b22e8c72ea1d5d37180004) | 1517995 | SucceedEntirely |
 
-**Known issue.** The next step, `alice.proveHit`, was proven by the proof server, but the wallet SDK's
-DUST fee estimate (`dryRunFee` → `Transaction.feesWithMargin`, wallet-sdk-dust-wallet 1.2.0 / ledger-v8 8.1.2)
-never returned for that transaction with preview's ledger parameters. The process stayed busy in that call for
-more than 15 minutes, and a second run on a fresh contract stopped at exactly the same point.
-The same transaction balances in under 20 seconds on the local network, so this looks like a fee-estimation issue
-specific to preview parameters, not a contract bug. We're still investigating; until then the full flow
-(proveHit, expireCall, revealCall) is demonstrated on the local network above.
+The final public state on preview matches the local run: round 3, two sealed calls, one hit, one miss.
+Call #1 is a MISS that was never revealed.
 
-Second preview run (fresh contract, same stop point):
+```bash
+MIDNIGHT_NETWORK=preview MIDNIGHT_SEED_FILE=/path/to/seed npm run deploy:preview
+```
 
-| step | tx hash | block |
-|---|---|---|
-| deploy | `f203275cae8574f15509173827ba902e881cd3e48736a6d14ee88ba5afe3755d` | 1516043 |
-| oracle.publishCloses(round 0) | `1e0a2257823dec84f84146b0c660887dd6161955486d33525b71233fec29d8f9` | 1516046 |
-| alice.registerAnalyst | `949d9a669a965c4b2b4519d6fcf2bedcb1f421aad1c86e9d0a877f079ee3dd9f` | 1516049 |
-| alice.sealCall #0 (private: BTC >= 101000) | `4ebf239b6fc41d173166bc79db8bc831fa7bcbfa020a118e9bb0c454e115c844` | 1516052 |
-| alice.sealCall #1 (private: ETH <= 3300) | `e094e6fb794787b02bdfd0db6ce24091a50487a1ba68619c276e5180640e1606` | 1516055 |
-| oracle.publishCloses(round 1 = expiry) | `da245fec53bc82bc81f6126e5562218ee6e89e86c452218957ec0c77d3d3a8c5` | 1516058 |
+### DUST fee balancing fix
+
+Earlier preview attempts (contracts `cd9c5b5a…a361` and the one deployed in tx `f203275c…755d`) stopped at
+`alice.proveHit`. One run hung and the other crashed with `RuntimeError: unreachable` inside the ledger WASM.
+
+**Root cause.** Preview's fee price sits at the floor (`overall_price` ≈ 5.4e-18), so `Transaction.fees()` for
+`proveHit` rounds to **0**. The DUST balancer in `wallet-sdk-dust-wallet` 4.x starts from that zero fee and selects
+no DUST inputs. The dry-run fee then comes back positive, and each later iteration counts that fee as a surplus, so
+the loop never adds a coin. The result is either an endless loop or an intent with empty `DustActions`, which the
+ledger rejects with a WASM panic. Upstream 5.0.0-rc rewrites this loop. The local chain only escaped the bug while
+its price was still above the floor; once it was idle, the hang reproduced there too.
+
+**Fix.** `deploy/run.mjs` builds the wallet with `additionalFeeOverhead` set to 1e9 SPECKs, a negligible amount. Every fee is
+then strictly positive, so at least one DUST input is always selected. This required no SDK upgrade and no contract change.
