@@ -1,0 +1,46 @@
+{
+  "network": "preview",
+  "networkId": "preview",
+  "contractAddress": "cd9c5b5ace4dbe98c84555dde9ae71910e028aaba31cfe7453e2ec6daccca361",
+  "startedAt": "2026-10-29T23:13:40Z",
+  "partial": true,
+  "note": "Stopped before alice.proveHit: the DUST fee estimate in the wallet SDK did not return for that transaction on preview (see docs/onchain-proof.md).",
+  "txs": [
+    {
+      "step": "deploy",
+      "txHash": "38cc8a4dbbe197360b5b0ef34d5874e1118700d73005d8bb2cfc1ff07c13c2e8",
+      "blockHeight": 1515783,
+      "status": "SucceedEntirely"
+    },
+    {
+      "step": "oracle.publishCloses(round 0)",
+      "txHash": "bd0c0f848a1704ed0e3710cab94b17085d0ea024966c47d28dd9b487f7bec4d9",
+      "blockHeight": 1515789,
+      "status": "SucceedEntirely"
+    },
+    {
+      "step": "alice.registerAnalyst",
+      "txHash": "20bfafbdb916e776e1a3db74b159a1e4c0a646a885dbc808238346c08ffc6c0f",
+      "blockHeight": 1515792,
+      "status": "SucceedEntirely"
+    },
+    {
+      "step": "alice.sealCall #0 (private: BTC >= 101000)",
+      "txHash": "0e2f51da4d60444af00b61c8c6ea76172a225a3e1babe857ee8c3dbb04643dae",
+      "blockHeight": 1515795,
+      "status": "SucceedEntirely"
+    },
+    {
+      "step": "alice.sealCall #1 (private: ETH <= 3300)",
+      "txHash": "55bbfd4ea4b98ef5e8f670d4fdd5532b7144019ad12730d5aeaf274eb92f1ce0",
+      "blockHeight": 1515799,
+      "status": "SucceedEntirely"
+    },
+    {
+      "step": "oracle.publishCloses(round 1 = expiry)",
+      "txHash": "f0be7960467c8ac64ef1afa8b42494038515260b4cc9a15e8fdf3225ce8dee55",
+      "blockHeight": 1515802,
+      "status": "SucceedEntirely"
+    }
+  ]
+}

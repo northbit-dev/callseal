@@ -166,11 +166,14 @@ function render() {
 }
 
 function renderRuns() {
-  const r = RUNS.preview ?? RUNS.preprod ?? RUNS.local;
-  if (!r) { $('#onchain').innerHTML = '<p class="muted">No network run bundled.</p>'; return; }
-  const label = r.network === 'local' ? 'local Midnight devnet (node 1.0.400 · indexer 4.3.5 · proof server 8.1.3)' : `Midnight ${r.network} testnet`;
-  $('#onchain').innerHTML = `<p>Same contract, real ZK proofs, ${esc(label)}. Contract <code>${esc(r.contractAddress)}</code></p>
+  const list = [RUNS.local, RUNS.preview, RUNS.preprod].filter(Boolean);
+  if (!list.length) { $('#onchain').innerHTML = '<p class="muted">No network run bundled.</p>'; return; }
+  $('#onchain').innerHTML = list.map((r) => {
+    const label = r.network === 'local' ? 'local Midnight devnet (node 1.0.400 · indexer 4.3.5 · proof server 8.1.3)' : `Midnight ${r.network} testnet`;
+    const note = r.partial ? `<p class="muted">Partial run: ${esc(r.note ?? '')}</p>` : '';
+    return `<h3>${esc(label)}</h3><p>Same contract, real ZK proofs. Contract <code>${esc(r.contractAddress)}</code></p>${note}
   <table><thead><tr><th>step</th><th>tx hash</th><th>block</th><th>status</th></tr></thead><tbody>${r.txs.map((t) => `<tr><td>${esc(t.step)}</td><td class="mono">${esc(t.txHash.slice(0, 16))}…</td><td>${t.blockHeight}</td><td>${esc(t.status)}</td></tr>`).join('')}</tbody></table>`;
+  }).join('');
 }
 
 // ---------------------------------------------------------------- wire up

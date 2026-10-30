@@ -56,3 +56,41 @@ npm run deploy:local
 The run was repeated on a fresh contract (`287e48e6…bc33a`, blocks 121–148) with the same result.
 
 A testnet (preview) run uses the same script with `MIDNIGHT_NETWORK=preview`; see the README.
+
+## Midnight preview testnet (partial)
+
+The same contract and script were run against the public Midnight **preview** network
+(`MIDNIGHT_NETWORK=preview`, indexer `indexer.preview.midnight.network`, local proof server 8.1.3).
+Deployment and the first six steps went through with real proofs; the SDK only returns once a
+transaction is final with status `SucceedEntirely`.
+
+* contract address: `cd9c5b5ace4dbe98c84555dde9ae71910e028aaba31cfe7453e2ec6daccca361` (deploy tx confirmed on the preview indexer, block 1515783)
+* raw result: [`deploy/runs/preview.json`](../deploy/runs/preview.json)
+
+| step | tx hash | block | status |
+|---|---|---|---|
+| deploy | `38cc8a4dbbe197360b5b0ef34d5874e1118700d73005d8bb2cfc1ff07c13c2e8` | 1515783 | SucceedEntirely |
+| oracle.publishCloses(round 0) | `bd0c0f848a1704ed0e3710cab94b17085d0ea024966c47d28dd9b487f7bec4d9` | 1515789 | SucceedEntirely |
+| alice.registerAnalyst | `20bfafbdb916e776e1a3db74b159a1e4c0a646a885dbc808238346c08ffc6c0f` | 1515792 | SucceedEntirely |
+| alice.sealCall #0 (private: BTC >= 101000) | `0e2f51da4d60444af00b61c8c6ea76172a225a3e1babe857ee8c3dbb04643dae` | 1515795 | SucceedEntirely |
+| alice.sealCall #1 (private: ETH <= 3300) | `55bbfd4ea4b98ef5e8f670d4fdd5532b7144019ad12730d5aeaf274eb92f1ce0` | 1515799 | SucceedEntirely |
+| oracle.publishCloses(round 1 = expiry) | `f0be7960467c8ac64ef1afa8b42494038515260b4cc9a15e8fdf3225ce8dee55` | 1515802 | SucceedEntirely |
+
+**Known issue.** The next step, `alice.proveHit`, was proven by the proof server, but the wallet SDK's
+DUST fee estimate (`dryRunFee` → `Transaction.feesWithMargin`, wallet-sdk-dust-wallet 1.2.0 / ledger-v8 8.1.2)
+never returned for that transaction with preview's ledger parameters. The process stayed busy in that call for
+more than 15 minutes, and a second run on a fresh contract stopped at exactly the same point.
+The same transaction balances in under 20 seconds on the local network, so this looks like a fee-estimation issue
+specific to preview parameters, not a contract bug. We're still investigating; until then the full flow
+(proveHit, expireCall, revealCall) is demonstrated on the local network above.
+
+Second preview run (fresh contract, same stop point):
+
+| step | tx hash | block |
+|---|---|---|
+| deploy | `f203275cae8574f15509173827ba902e881cd3e48736a6d14ee88ba5afe3755d` | 1516043 |
+| oracle.publishCloses(round 0) | `1e0a2257823dec84f84146b0c660887dd6161955486d33525b71233fec29d8f9` | 1516046 |
+| alice.registerAnalyst | `949d9a669a965c4b2b4519d6fcf2bedcb1f421aad1c86e9d0a877f079ee3dd9f` | 1516049 |
+| alice.sealCall #0 (private: BTC >= 101000) | `4ebf239b6fc41d173166bc79db8bc831fa7bcbfa020a118e9bb0c454e115c844` | 1516052 |
+| alice.sealCall #1 (private: ETH <= 3300) | `e094e6fb794787b02bdfd0db6ce24091a50487a1ba68619c276e5180640e1606` | 1516055 |
+| oracle.publishCloses(round 1 = expiry) | `da245fec53bc82bc81f6126e5562218ee6e89e86c452218957ec0c77d3d3a8c5` | 1516058 |
